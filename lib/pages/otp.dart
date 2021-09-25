@@ -128,7 +128,7 @@ class _OtpPageState extends State<OtpPage> {
                         fieldHeight: 50,
                         fieldWidth: 40,
                         activeFillColor: Colors.white,
-                        selectedFillColor: Colors.red[300],
+                        selectedFillColor: Colors.white,
                         inactiveFillColor: Colors.white,
                       ),
                       cursorColor: Colors.black,
@@ -151,7 +151,6 @@ class _OtpPageState extends State<OtpPage> {
                       //   print("Pressed");
                       // },
                       onChanged: (value) {
-                        print(value);
                         setState(() {
                           currentText = value;
                         });
