@@ -52,7 +52,9 @@ class _OtpPageState extends State<OtpPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          print('clicked');
+        },
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
