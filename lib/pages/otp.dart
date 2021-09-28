@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:homely_mobile_app/utils/authentication.dart';
+import 'package:homely_mobile_app/pages/user_info_screen.dart';
 class OtpPage extends StatefulWidget {
   OtpPage();
 
@@ -13,7 +15,6 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   TextEditingController textEditingController = TextEditingController();
   // ..text = "123456";
-
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
@@ -110,7 +111,7 @@ class _OtpPageState extends State<OtpPage> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
-                      length: 4,
+                      length: 6,
                       obscureText: true,
                       obscuringCharacter: '*',
                       obscuringWidget: FlutterLogo(
@@ -147,7 +148,7 @@ class _OtpPageState extends State<OtpPage> {
                         )
                       ],
                       onCompleted: (v) {
-                        print("Completed");
+                        print("Completed"+v);
                       },
                       // onTap: () {
                       //   print("Pressed");
@@ -202,18 +203,38 @@ class _OtpPageState extends State<OtpPage> {
                 child: ButtonTheme(
                   height: 50,
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async{
                       formKey.currentState!.validate();
+                      print('Pressed andshow SMS: $currentText');
+                      dynamic user ;
+                      try{
+                        // Create a PhoneAuthCredential with the code
+                        user = await Authentication.signInWithPhone(context ,{"verificationId": args['verificationId'],"smsCode":currentText});
+                        print('user $user');
+                      }catch(e){
+                        print('error ==> $e');
+                        currentText = "";
+                      }
                       // conditions for validating
-                      if (currentText.length != 6 || currentText != "1234") {
-                        errorController!.add(ErrorAnimationType
-                            .shake); // Triggering error shake animation
+                      if (currentText.length != 6) {
+                        errorController!.add(ErrorAnimationType.shake); // Triggering error shake animation
                         setState(() => hasError = true);
                       } else {
                         setState(
                           () {
                             hasError = false;
-                            snackBar("OTP Verified!!");
+                            // snackBar("OTP Verified!!");
+                            if (user != null) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => UserInfoScreen(
+                                    user: user,
+                                  ),
+                                ),
+                              );
+                            }else{
+                              snackBar("Wrong OTP");
+                            }
                           },
                         );
                       }
@@ -260,7 +281,7 @@ class _OtpPageState extends State<OtpPage> {
                     child: Text("Set Text"),
                     onPressed: () {
                       setState(() {
-                        textEditingController.text = "123456";
+                        textEditingController.text = "1234";
                       });
                     },
                   )),

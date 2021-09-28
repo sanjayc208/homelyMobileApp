@@ -16,7 +16,7 @@ class UserInfoScreen extends StatefulWidget {
 }
 
 class _UserInfoScreenState extends State<UserInfoScreen> {
-  late User _user;
+  late User? _user;
   bool _isSigningOut = false;
 
   Route _routeToSignInScreen() {
@@ -53,6 +53,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         elevation: 0,
         backgroundColor: CustomColors.firebaseNavy,
         title: new Text('homely'),
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Padding(
@@ -65,12 +66,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(),
-              _user.photoURL != null
+              _user?.photoURL != null
                   ? ClipOval(
                       child: Material(
                         color: CustomColors.firebaseGrey.withOpacity(0.3),
                         child: Image.network(
-                          _user.photoURL!,
+                          _user?.photoURL ?? "",
                           fit: BoxFit.fitHeight,
                         ),
                       ),
@@ -98,7 +99,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               ),
               SizedBox(height: 8.0),
               Text(
-                _user.displayName!,
+                _user?.displayName ?? "",
                 style: TextStyle(
                   color: CustomColors.firebaseYellow,
                   fontSize: 26,
@@ -106,7 +107,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               ),
               SizedBox(height: 8.0),
               Text(
-                '( ${_user.email!} )',
+                '( ${_user?.email ?? ""} )',
                 style: TextStyle(
                   color: CustomColors.firebaseOrange,
                   fontSize: 20,
