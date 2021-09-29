@@ -1,16 +1,14 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homely_mobile_app/pages/user_info_screen.dart';
 import 'package:homely_mobile_app/utils/authentication.dart';
 
-class GoogleSignInButton extends StatefulWidget {
+class FacebookSignInButton extends StatefulWidget {
   @override
-  _GoogleSignInButtonState createState() => _GoogleSignInButtonState();
+  _FacebookSignInButtonState createState() => _FacebookSignInButtonState();
 }
 
-class _GoogleSignInButtonState extends State<GoogleSignInButton> {
+class _FacebookSignInButtonState extends State<FacebookSignInButton> {
   bool _isSigningIn = false;
 
   @override
@@ -19,11 +17,10 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: _isSigningIn
           ? CircularProgressIndicator(
-              
+             
             )
-          : ElevatedButton(
+          : OutlinedButton(
               style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(Size(300, 50)),
                 backgroundColor: MaterialStateProperty.all(Colors.white),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
@@ -36,8 +33,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   _isSigningIn = true;
                 });
 
-                User? user =
-                    await Authentication.signInWithGoogle(context: context);
+                dynamic user = await Authentication.signInWithFacebook(context: context);
 
                 setState(() {
                   _isSigningIn = false;
@@ -60,13 +56,13 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Image(
-                      image: AssetImage("assets/photos/google_logo.png"),
+                      image: AssetImage("assets/photos/Facebook-logo.png"),
                       height: 35.0,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        'Sign in with Google',
+                        'Sign in with Facebook',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black54,
