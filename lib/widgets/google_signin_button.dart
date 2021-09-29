@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homely_mobile_app/pages/user_info_screen.dart';
@@ -19,8 +21,9 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           ? CircularProgressIndicator(
               
             )
-          : OutlinedButton(
+          : ElevatedButton(
               style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all(Size(300, 50)),
                 backgroundColor: MaterialStateProperty.all(Colors.white),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
