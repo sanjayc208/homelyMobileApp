@@ -5,11 +5,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:homely_mobile_app/pages/user_info_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'dart:developer';
 
 class Authentication {
   static Future<FirebaseApp> initializeFirebase({
     required BuildContext context,
   }) async {
+    final obj = {
+      "name": "homely",
+      "options": {"projectId": 'homely-3398b'}
+    };
+
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
     User? user = FirebaseAuth.instance.currentUser;
@@ -90,7 +96,7 @@ class Authentication {
     }
   }
 
-  static signInWithPhone(context,args) async {
+  static signInWithPhone(context, args) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
@@ -113,6 +119,8 @@ class Authentication {
           await auth.signInWithCredential(credential);
 
       user = userCredential.user;
+      dynamic token = await user?.getIdToken(true);
+      log('data $token');
       return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -132,7 +140,7 @@ class Authentication {
           Authentication.customSnackBar(
             content: 'Invalid PIN',
           ),
-        ); 
+        );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
