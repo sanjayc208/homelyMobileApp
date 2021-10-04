@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homely_mobile_app/utils/authentication.dart';
 import 'package:homely_mobile_app/pages/user_info_screen.dart';
 class OtpPage extends StatefulWidget {

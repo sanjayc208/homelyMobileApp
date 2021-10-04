@@ -11,10 +11,6 @@ class Authentication {
   static Future<FirebaseApp> initializeFirebase({
     required BuildContext context,
   }) async {
-    final obj = {
-      "name": "homely",
-      "options": {"projectId": 'homely-3398b'}
-    };
 
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
@@ -97,8 +93,6 @@ class Authentication {
   }
 
   static signInWithPhone(context, args) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: args['verificationId'], smsCode: args['smsCode']);
