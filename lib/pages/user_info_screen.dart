@@ -50,7 +50,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: CustomColors.firebaseGrey,
+        backgroundColor: Colors.grey.shade400,
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(50),
             child: HeaderHome(user: _user)),

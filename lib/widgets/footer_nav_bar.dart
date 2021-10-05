@@ -44,7 +44,7 @@ class _FooterNavBarState extends State<FooterNavBar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      backgroundColor: CustomColors.firebaseGrey,
+      backgroundColor: Colors.grey.shade400,
       buttonBackgroundColor: Colors.red,
       color: Colors.white,
       height: 60.0,
@@ -56,7 +56,7 @@ class _FooterNavBarState extends State<FooterNavBar> {
         Icon(Icons.compare_arrows, size: 30, color: _selectedIndex == 2 ? Colors.white : Colors.black),
       ],
         onTap: (index) => _onItemTapped(index),
-        shadow: 1.0
+        shadow: 3.0
     );
   }
 }

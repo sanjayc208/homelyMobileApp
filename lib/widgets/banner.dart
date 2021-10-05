@@ -29,7 +29,7 @@ class _OfferBannerState extends State<OfferBanner> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
-              image: NetworkImage("https://media.istockphoto.com/vectors/rakhi-offer-banner-design-template-vector-id1163952690"),
+              image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWO_Ez6Lp4SGNTzvdr0Z7luQaVlETlqNIW7w&usqp=CAU"),
               fit: BoxFit.cover,
             ),
           ),
@@ -41,7 +41,7 @@ class _OfferBannerState extends State<OfferBanner> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
-              image: NetworkImage("https://media.istockphoto.com/vectors/rakhi-offer-banner-design-template-vector-id1163952690"),
+              image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-0Cp5-3xmwVDAZLj4kIPczXBZZ3qxo1A_uQ&usqp=CAU"),
               fit: BoxFit.cover,
             ),
           ),
