@@ -1,3 +1,5 @@
+// ignore_for_file: await_only_futures
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:homely_mobile_app/utils/custom_colors.dart';
 import 'package:homely_mobile_app/widgets/google_signin_button.dart';
 import 'package:homely_mobile_app/widgets/facebook_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 class LoginPage extends StatefulWidget {
   LoginPage();
 
@@ -16,6 +19,8 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final myController = TextEditingController();
   bool _isSigningIn = false;
+  String countryCode = '+91' ;
+  bool textFieldExist = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +34,60 @@ class LoginPageState extends State<LoginPage> {
           Image(image: AssetImage('assets/photos/homely_logo.png')),
           // SizedBox(height: 10),
           SizedBox(
-            height: 80,
-            width: 280,
-            child: new TextField(
-              controller: myController,
-              decoration: new InputDecoration(labelText: "Enter your number"),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
+            height: 100,
+            width: 300,
+            child:Row(
+               children: <Widget>[
+                      Expanded(
+                        flex: 0,
+                        child: CountryCodePicker(
+                            onChanged: (c) => countryCode = c as String,
+                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                            favorite: ['+91','IN'],
+                            initialSelection: 'IN',
+                            // optional. Shows only country name and flag
+                            showCountryOnly: false,
+                            // optional. Shows only country name and flag when popup is closed.
+                            showOnlyCountryWhenClosed: false,
+                            // optional. aligns the flag and the Text left
+                            alignLeft: false,
+                          ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: new TextField(
+                          controller: myController,
+                          style: TextStyle(
+                            fontSize: 20,
+                            height: 1.0
+                          ),
+                          decoration: new InputDecoration(labelText: "Enter your number"),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
           ),
           new ElevatedButton(
               onPressed: () async {
+                if(myController.text.length <= 8){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                        Authentication.customSnackBar(
+                          content: 'Please add Proper Mobile Number',
+                        ),
+                    );
+                    return null;
+                }
                 FirebaseAuth auth = FirebaseAuth.instance;
                 setState(() {
                   _isSigningIn = true;
                 });
 
                 await auth.verifyPhoneNumber(
-                  phoneNumber: '+91 '+ myController.text,
+                  phoneNumber: countryCode + ' ' + myController.text,
                   verificationCompleted: (PhoneAuthCredential credential) {},
                   verificationFailed: (FirebaseAuthException e) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -66,9 +105,6 @@ class LoginPageState extends State<LoginPage> {
                 setState(() {
                   _isSigningIn = false;
                 });
-
-                Navigator.pushNamed(context, '/otp',
-                    arguments: {"phoneNumber": myController.text});
               },
               style: ElevatedButton.styleFrom(
                   fixedSize: Size(280, 50),

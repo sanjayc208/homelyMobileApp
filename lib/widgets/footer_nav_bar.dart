@@ -44,8 +44,8 @@ class _FooterNavBarState extends State<FooterNavBar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      backgroundColor: Colors.grey.shade400,
-      buttonBackgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      buttonBackgroundColor: Colors.red.shade700,
       color: Colors.white,
       height: 60.0,
       animationCurve: Curves.easeInOut,

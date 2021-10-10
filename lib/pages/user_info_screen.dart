@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homely_mobile_app/pages/login.dart';
 import 'package:homely_mobile_app/utils/authentication.dart';
-import 'package:homely_mobile_app/utils/custom_colors.dart';
 import 'package:homely_mobile_app/widgets/footer_nav_bar.dart';
 import 'package:homely_mobile_app/widgets/header_home.dart';
 import 'package:homely_mobile_app/widgets/banner.dart';
+import 'package:homely_mobile_app/widgets/popular_items_list.dart';
+import 'package:homely_mobile_app/widgets/items_list.dart';
+
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({Key? key, required User user})
       : _user = user,
@@ -49,101 +51,90 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-        backgroundColor: Colors.grey.shade400,
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50),
-            child: HeaderHome(user: _user)),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              bottom: 20.0,
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Stack(children: <Widget>[
+            Container(
+              child: Stack(
+                children: [
+                  // CustomPaint(
+                  //   size: Size(
+                  //       width,
+                  //       (width *
+                  //           0.7013333129882813)), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                  //   painter: RPSCustomPainter(),
+                  // ),
+                  ClipPath(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 2.3,
+                      color: Colors.red.shade600,
+                      // child: Image(image: AssetImage('assets/photos/background_image.jpg' )),
+                    ),
+                    clipper: Clipper(),
+                  )
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+            Column(
+              children: <Widget>[
+                HeaderHome(user: _user),
                 OfferBanner(),
-                Row(),
-                
-                SizedBox(height: 16.0),
-                Text(
-                  'Hello',
-                  style: TextStyle(
-                    color: CustomColors.firebaseGrey,
-                    fontSize: 26,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  _user?.displayName ?? "",
-                  style: TextStyle(
-                    color: CustomColors.firebaseYellow,
-                    fontSize: 26,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  '( ${_user?.email ?? ""} )',
-                  style: TextStyle(
-                    color: CustomColors.firebaseOrange,
-                    fontSize: 20,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                SizedBox(height: 24.0),
-                Text(
-                  'You are now signed in using your Google account. To sign out of your account click the "Sign Out" button below.',
-                  style: TextStyle(
-                      color: CustomColors.firebaseGrey.withOpacity(0.8),
-                      fontSize: 14,
-                      letterSpacing: 0.2),
-                ),
-                SizedBox(height: 16.0),
-                _isSigningOut
-                    ? CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      )
-                    : ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.redAccent,
-                          ),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            _isSigningOut = true;
-                          });
-                          await Authentication.signOut(context: context);
-                          setState(() {
-                            _isSigningOut = false;
-                          });
-                          Navigator.of(context)
-                              .pushReplacement(_routeToSignInScreen());
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: Text(
-                            'Sign Out',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 2,
-                            ),
-                          ),
-                        ),
-                      ),
+                SizedBox(height: 40),
+                PopularItemList(),
+                SizedBox(height: 10),
+                ItemsList(),
               ],
-            ),
-          ),
+            )
+          ]),
         ),
         bottomNavigationBar: SizedBox(height: 62, child: FooterNavBar()));
+  }
+}
+
+class RPSCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint_0 = new Paint()
+      ..color = Color.fromARGB(255, 255, 86, 89)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 1;
+
+    Path path_0 = Path();
+    path_0.moveTo(size.width * 0.6200000, 0);
+    path_0.quadraticBezierTo(size.width * 0.7947917, size.height * 0.5253571, 0,
+        size.height * 0.6442857);
+    path_0.quadraticBezierTo(
+        size.width * -0.0052083, size.height * 0.5535714, 0, 0);
+
+    canvas.drawPath(path_0, paint_0);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class Clipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+
+    path.lineTo(0, size.height - 150);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height - 10);
+    path.lineTo(size.width, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
